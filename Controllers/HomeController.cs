@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MySQLFun.Models;
-using MySQLFun.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,22 +12,33 @@ namespace MySQLFun.Controllers
 {
     public class HomeController : Controller
     {
-        private IBowlersRepository repo { get; set; }
-
+        private BowlersDbContext context { get; set; }
         // Constructor
-        public HomeController(IBowlersRepository temp)
+        public HomeController(BowlersDbContext temp)
         {
             // load up the repository
-            repo = temp;
+            context = temp;
         }
 
-        public IActionResult Index()
+        // we are setting it up so the id is set to 0 to load all records. This will allow 
+        // us to better control the problems with "id"
+        public IActionResult Index(int id=0)
         {
             // set up our dataset, and return in the view the information from the dataset
-            var blah = repo.Bowlers
-                .ToList();
-
-            return View(blah);
+            if(id == 0)
+            {
+                var bowlers = context.bowlers.OrderBy(x => x.BowlerLastName).ToList();
+                ViewBag.Teams = context.teams.ToList();
+                ViewBag.CurrentTeamID = id;
+                return View(bowlers);
+            }
+            else
+            {
+                var bowlers = context.bowlers.Include(x => x.team).Where(x => x.TeamID == id).ToList();
+                ViewBag.Teams = context.teams.ToList();
+                ViewBag.CurrentTeamID = id;
+                return View(bowlers);
+            }
         }
 
         public IActionResult ConfirmDelete()
@@ -37,65 +47,72 @@ namespace MySQLFun.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddBowler(int bowlerid)
+        public IActionResult AddBowler()
         {
-            ViewBag.Bowler = repo.Bowlers.ToList();
-
-            return View(
-            new Bowler
-            {
-                //bowler = repo.Bowlers.Single(x => x.BowlerID == bowlerid)
-            }
-            );
+            ViewBag.Teams = context.teams.ToList();
+            return View();
         }
 
         [HttpPost]
         public IActionResult AddBowler(Bowler b)
         {
+            // use validation
             if (ModelState.IsValid)
             {
-                repo.SaveBowler(b);
-
-                return View("ConfirmAdd", b);
+                context.Add(b);
+                context.SaveChanges();
+                return RedirectToAction("Index");
             }
             else
             {
+                ViewBag.Teams = context.teams.ToList();
                 return View(b);
             }
         }
 
         [HttpGet]
-        public IActionResult Edit(int bowlerid)
+        public IActionResult Edit()
         {
-            ViewBag.Bowler = repo.Bowlers.ToList();
-
-            ViewBag.person = repo.Bowlers.Single(x => x.BowlerID == bowlerid);
-
-            return View("Index");
+            int id = Convert.ToInt32(RouteData.Values["id"]);
+            var bowler = context.bowlers.Single(x => x.BowlerID == id);
+            ViewBag.Teams = context.teams.ToList();
+            return View("AddBowler", bowler);
         }
 
         [HttpPost]
         public IActionResult Edit(Bowler b)
         {
-            repo.SaveBowler(b);
+            // validation again
+            if (ModelState.IsValid)
+            {
+                context.Update(b);
+                context.SaveChanges();
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.Teams = context.teams.ToList();
+                return View("AddBowler", b);
+            }
         }
 
         [HttpGet]
-        public IActionResult Delete(int BowlerIdNumber)
+        public IActionResult Delete()
         {
-            var person = repo.Bowlers.Single(x => x.BowlerID == BowlerIdNumber);
+            int id = Convert.ToInt32(RouteData.Values["id"]);
+            var bowler = context.bowlers.Single(x => x.BowlerID == id);
 
-            return View("ConfirmDelete", person);
+            return View(bowler);
         }
 
         [HttpPost]
         public IActionResult Delete(Bowler b)
         {
-            repo.DeleteBowler(b);
+            context.Remove(b);
+            context.SaveChanges();
 
-            return RedirectToAction("ConfirmDelete");
+            return RedirectToAction("Index");
         }
     }
 }

@@ -37,9 +37,22 @@
         <label asp-for="BowlerPhoneNumber">Phone Number:</label>
         <input asp-for="BowlerPhoneNumber" /><br />
 
-        <input type="hidden" asp-for="BowlerID" value="@ViewBag.person" />
+        <label asp-for="TeamID">Team ID</label>
+        <select asp-for="TeamID">
+            @foreach (var x in ViewBag.Teams)
+            {
+                <option value="@x.TeamID">@x.TeamName</option>
+            }
+        </select>
 
-        <a class="btn btn-success" asp-controller="Home" asp-action="AddBowler">Submit</a>
-
+        @if (Model != null)
+        {
+             <input type="hidden" asp-for="BowlerID" value="@Model.BowlerID" />
+             <button class="btn btn-primary" asp-action="Edit">Update</button>
+        }
+        else
+        {
+            <button class="btn btn-primary" asp-action="AddBowler">Add</button>
+        }
     </form>
 </div>

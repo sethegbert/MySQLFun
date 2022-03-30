@@ -1,0 +1,19 @@
+﻿@{
+}
+@model Bowler
+
+@* this is the page that allow us to delete different bowlers *@
+
+<div class="card">
+    <div class="card-header">
+        <h1>Are you sure you want to delete @Model.BowlerFirstName @Model.BowlerMiddleInit @Model.BowlerLastName from the database?</h1>
+    </div>
+    <div class="card-body">
+        <a style="width:150px;" class="btn btn-primary mb-2" asp-action="Index">Cancel</a>
+
+        <form method="post">
+            <input type="hidden" asp-for="BowlerID" value="@Model.BowlerID" />
+            <button style="width:150px;" class="btn btn-danger" asp-action="Delete">Yes</button>
+        </form>
+    </div>
+</div>

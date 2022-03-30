@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace MySQLFun.Models
 {
-    // We need to set up our context that inherits from dbcontext, and create the bowlers set
     public class BowlersDbContext : DbContext
     {
-        public BowlersDbContext()
-        {
-        }
-        public BowlersDbContext(DbContextOptions<BowlersDbContext> options) : base (options)
+        public BowlersDbContext(DbContextOptions<BowlersDbContext> options) : base(options)
         {
 
         }
 
-        public DbSet<Bowler> Bowlers { get; set; }
+        public DbSet<Bowler> bowlers { get; set; }
+
+        public DbSet<Team> teams { get; set; }
     }
+
 }

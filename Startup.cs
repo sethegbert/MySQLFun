@@ -33,9 +33,6 @@ namespace MySQLFun
                options.UseMySql(Configuration["ConnectionStrings:BowlingLeagueDbConnection"]);
 
            });
-
-            // we need to add this in order for the repository method to work. It now knows the IBowlersRepsitory refers to the EFBowlersRepository
-            services.AddScoped<IBowlersRepository, EFBowlersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
