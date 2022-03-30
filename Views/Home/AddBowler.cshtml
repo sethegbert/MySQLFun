@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Add Bowlers";
+}
+
+@* This page holds our form for adding a bowler to the database *@
+
+@model MySQLFun.Models.Bowler
+
+<h1>Add a Bowler</h1>
+
+<div>
+    <form method="post">
+
+        <div asp-validation-dummary="All"></div>
+
+        <label asp-for="BowlerFirstName">First Name:</label>
+        <input asp-for="BowlerFirstName" /><br />
+
+        <label asp-for="BowlerMiddleInit">Middle Initial:</label>
+        <input asp-for="BowlerMiddleInit" /><br />
+        
+        <label asp-for="BowlerLastName">Last Name:</label>
+        <input asp-for="BowlerLastName" /><br />
+
+        <label asp-for="BowlerAddress">Address:</label>
+        <input asp-for="BowlerAddress" /><br />
+
+        <label asp-for="BowlerCity">City:</label>
+        <input asp-for="BowlerCity" /><br />
+
+        <label asp-for="BowlerState">State:</label>
+        <input asp-for="BowlerState" /><br />
+
+        <label asp-for="BowlerZip">ZIP Code:</label>
+        <input asp-for="BowlerZip" /><br />
+
+        <label asp-for="BowlerPhoneNumber">Phone Number:</label>
+        <input asp-for="BowlerPhoneNumber" /><br />
+
+        <input type="hidden" asp-for="BowlerID" value="@ViewBag.person" />
+
+        <a class="btn btn-success" asp-controller="Home" asp-action="AddBowler">Submit</a>
+
+    </form>
+</div>
