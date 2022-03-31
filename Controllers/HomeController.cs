@@ -12,9 +12,9 @@ namespace MySQLFun.Controllers
 {
     public class HomeController : Controller
     {
-        private BowlersDbContext context { get; set; }
+        private BowlerDbContext context { get; set; }
         // Constructor
-        public HomeController(BowlersDbContext temp)
+        public HomeController(BowlerDbContext temp)
         {
             // load up the repository
             context = temp;
@@ -34,7 +34,7 @@ namespace MySQLFun.Controllers
             }
             else
             {
-                var bowlers = context.bowlers.Include(x => x.team).Where(x => x.TeamID == id).ToList();
+                var bowlers = context.bowlers.Include(x => x.Team).Where(x => x.TeamID == id).ToList();
                 ViewBag.Teams = context.teams.ToList();
                 ViewBag.CurrentTeamID = id;
                 return View(bowlers);

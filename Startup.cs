@@ -27,7 +27,7 @@ namespace MySQLFun
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<BowlersDbContext>(options =>
+            services.AddDbContext<BowlerDbContext>(options =>
            {
                // set up our connection to our mysql database
                options.UseMySql(Configuration["ConnectionStrings:BowlingLeagueDbConnection"]);
@@ -60,8 +60,6 @@ namespace MySQLFun
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-                endpoints.MapDefaultControllerRoute();
             });
         }
     }

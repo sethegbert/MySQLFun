@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MySQLFun.Models
 {
-    public class BowlersDbContext : DbContext
+    public class BowlerDbContext : DbContext
     {
-        public BowlersDbContext(DbContextOptions<BowlersDbContext> options) : base(options)
+        public BowlerDbContext(DbContextOptions<BowlerDbContext> options) : base(options)
         {
 
         }

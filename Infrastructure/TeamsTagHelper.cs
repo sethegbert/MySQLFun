@@ -55,7 +55,7 @@ namespace BowlingLeague.Infrastructure
 
             final.InnerHtml.AppendHtml(tb1);
 
-            //Here i use a loop to go through each team in the Teams list. Then I add the appropriate PageAction and id parameter
+            // this loops through team list in order to add the id
             for (int i = 0; i < Teams.Count(); i++)
             {
                 TagBuilder tb = new TagBuilder("a");

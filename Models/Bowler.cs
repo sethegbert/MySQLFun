@@ -29,6 +29,6 @@ namespace MySQLFun.Models
         // here is a foreign key constraint for the team class
         [Required]
         public int TeamID { get; set; }
-        public Team team { get; set; }
+        public Team Team { get; set; }
     }
 }
